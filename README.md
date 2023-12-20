@@ -1,3 +1,11 @@
+============COMMENTS TONY GET STARTED========
+We need a database, 
+we use sudo docker-compose up, that has initially pass example and user root
+porst 3306 and 8080 for adminer.
+also need to create database, call from .env we decided to call it dbtm(database transcend money)
+npx prisma migrate dev
+============================================
+
 # nuxt-iam - Nuxt authentication framework
 
 ## Download from **[Github](https://github.com/jeremycoder/nuxt-iam)** NOT npm.

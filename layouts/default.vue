@@ -59,7 +59,7 @@ const mainMenu = [
     bold: true,
   },
   {
-    name: "Home",
+    name: "HomE",
     link: "/",
   },
   {
