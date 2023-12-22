@@ -6,6 +6,17 @@ also need to create database, call from .env we decided to call it dbtm(database
 npx prisma migrate dev
 ============================================
 
+========= PRODUCTION WEBAPP=====
+ssr(must be used to serve api):
+npm run build
+npm run start
+
+static:
+npm run build
+npm run generate
+npx serve -l 42003 .output/public
+
+========
 # nuxt-iam - Nuxt authentication framework
 
 ## Download from **[Github](https://github.com/jeremycoder/nuxt-iam)** NOT npm.

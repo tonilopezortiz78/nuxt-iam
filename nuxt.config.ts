@@ -4,7 +4,6 @@ export default defineNuxtConfig({
     // CSS file in the project
     "@/assets/iam/resources/css/style.css",
   ],
-
   runtimeConfig: {
     // IAM token secrets. Please rotate every 2 - 4 weeks
     iamAccessTokenSecret: process.env.IAM_ACCESS_TOKEN_SECRET,
