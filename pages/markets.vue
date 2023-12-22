@@ -42,10 +42,10 @@
 
 <script setup>
 import numeral from 'numeral';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import ColumnGroup from 'primevue/columngroup';   // optional
-import Row from 'primevue/row';                   // optional
+//import DataTable from 'primevue/datatable';
+//import Column from 'primevue/column';
+//import ColumnGroup from 'primevue/columngroup';   // optional
+//import Row from 'primevue/row';                   // optional
 
 let tickerData = ref({});
 const marketsUrl='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&sparkline=false&price_change_percentage=1h%2C24h%2C7d&locale=en'

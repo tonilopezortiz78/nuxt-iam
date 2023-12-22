@@ -1,12 +1,14 @@
 ============COMMENTS TONY GET STARTED========
 We need a database, 
-we use sudo docker-compose up, that has initially pass example and user root
+we use sudo docker-compose up, that has initially pass is on .env, also db name is on .env.
+name for db is dbtm, have to be created from 8080 adminer. 
 porst 3306 and 8080 for adminer.
 also need to create database, call from .env we decided to call it dbtm(database transcend money)
 npx prisma migrate dev
 ============================================
 
 ========= PRODUCTION WEBAPP=====
+first npm install
 ssr(must be used to serve api):
 npm run build
 npm run start

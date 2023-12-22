@@ -3,22 +3,21 @@
     <div class="text-center">
       <IamLogo />
     </div>
-    <h1 class="text-center">Your Nuxt Authentication Starter App!</h1>
+    <h1 class="text-center">Empower your trades, conquer the market.</h1>
     <div class="text-center">
       <p>
-        Quickly build an amazing app with the Nuxt IAM starter kit. It comes
-        with Nuxt IAM auth framework to help you get started quickly.
+	Precision data, powerful strategies. Fuel your crypto success.
       </p>
       <div class="more-buttons">
         <NxButton
           class="learn-more-button"
           theme="warning"
           size="large"
-          @click="navigateTo('/iam/')"
-          >Learn More</NxButton
+          @click="navigateTo('/orderbook')"
+          >Orderbook</NxButton
         >
-        <NxButton theme="primary" size="large" @click="navigateTo('/iam/')"
-          >Docs</NxButton
+        <NxButton theme="primary" size="large" @click="navigateTo('/markets')"
+          >Markets</NxButton
         >
       </div>
     </div>
