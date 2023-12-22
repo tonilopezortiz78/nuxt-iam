@@ -16,7 +16,7 @@ body {
   height: 80px;
 }
 .loading-spinner:after {
-  content: " ";
+  content: "Loading...";
   display: block;
   width: 64px;
   height: 64px;

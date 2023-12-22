@@ -6,7 +6,7 @@
       <slot />
     </div>
     <IamFooter>
-      <p>&copy; 2022 My Company, Inc</p>
+      <p>&copy; 2023 Transcend Money, community</p>
     </IamFooter>
   </div>
 </template>
@@ -54,21 +54,29 @@ const nuxtIamMenu = [
 ] as NxLinks;
 
 const mainMenu = [
+  /*
   {
-    name: "LOGO",
+    name: "www.Transcend.Money",
     bold: true,
   },
+  */
   {
-    name: "HomE",
+    name: "Home",
     link: "/",
   },
+  /*
   {
     name: "Nuxt IAM",
     children: nuxtIamMenu,
   },
+  */
   {
-    name: "Sample",
-    link: "/sample",
+    name: "Markets",
+    link: "/markets",
+  },
+  {
+    name: "OrderBook",
+    link: "/orderbook",
   },
   {
     name: "Protected Page",
@@ -89,7 +97,7 @@ function menuClicked(menuItem: NxLink) {
 }
 
 useHead({
-  title: "Nuxt IAM Example Site",
+  title: "Transcend Money",
 });
 </script>
 

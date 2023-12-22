@@ -20,7 +20,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start":"nuxt start"
+    "start": "nuxt start"
   },
   "devDependencies": {
     "nuxt": "3.3.2",
@@ -39,6 +39,7 @@
     "google-auth-library": "^8.7.0",
     "jsonwebtoken": "^9.0.0",
     "nodemailer": "^6.8.0",
+    "numeral": "^2.0.6",
     "nuxt-vue3-google-signin": "^0.0.8",
     "pinia": "^2.0.33",
     "save-dev": "^0.0.1-security",

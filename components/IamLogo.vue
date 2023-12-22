@@ -1,3 +1,3 @@
 <template>
-  <img src="~~/iam/ui/img/nuxt-iam-logo.png/" width="200px" />
+  <img style="border-radius:90%" src="~~/iam/ui/img/tmlogo.jpg/" width="200px" />
 </template>
