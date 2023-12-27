@@ -4,7 +4,7 @@
       <NxNavbar
         :key="isLoggedInKey"
         :menu="isLoggedInMenu"
-        theme="none"
+        theme="black"
         size="small"
         @clicked="menuClicked"
       />
@@ -26,7 +26,7 @@
     <IamLogoLink />
     <NxNavbar
       :menu="isNotLoggedInMenu"
-      theme="none"
+      theme="dark"
       size="small"
       class="login-register-menu"
       @clicked="menuClicked"

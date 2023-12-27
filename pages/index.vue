@@ -26,13 +26,14 @@
 
 <script setup>
 useHead({
-  title: "Home Page - Nuxt IAM Sample app",
+  title: "Home transcend money",
 });
 </script>
 
 <style scoped>
 .text-center {
   text-align: center;
+  color:white;
 }
 
 .more-buttons {

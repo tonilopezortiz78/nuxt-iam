@@ -8,6 +8,7 @@
 <script setup>
 // This is how you get data from a plugin
 // plugins folder
+
 const nuxtApp = useNuxtApp();
 const today = nuxtApp.today;
 

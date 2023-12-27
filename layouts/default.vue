@@ -1,4 +1,4 @@
-<template>
+<template >
   <div class="container">
     <NxNavbar :menu="mainMenu" @clicked="menuClicked" />
     <IamDashboardHeader class="iam-dashboard-header" />
@@ -109,15 +109,18 @@ useHead({
 .container {
   margin: 0 3rem;
   min-width: 360px;
+  background-color: black;
 }
 
 .iam-dashboard-header {
   margin-bottom: 1.75rem;
+  background-color: black;
 }
 
 @media (max-width: 525px) {
   .container {
     margin: 0 auto;
+    background-color: black;
   }
 }
 </style>

@@ -47,7 +47,7 @@ const props = defineProps({
         "none",
       ].includes(value);
     },
-    default: "light",
+    default: "dark",
   },
   size: {
     type: String,
@@ -283,7 +283,7 @@ a {
 
 .dark {
   color: #fff;
-  background-color: #212529;
+  background-color: black;
   border-bottom: #212529;
 }
 

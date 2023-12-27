@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="color:white; text-align:center">
     <div class="text-center">
       <h1>Cryptocurrency Symbol Select</h1>
   
@@ -37,9 +37,10 @@
       <div>
           <!-- <BtcChart class="center"/> -->
       </div>
+      <div id="tables-container" style="margin-top:30px;">
+        <div id="asks-table"> 
           <h1 class="text-center">asks:</h1>
-      <div>
-          <table class="text-center mx-auto m-4">
+          <table  class="text-center mx-auto m-4">
           <thead>
               <tr>
                   <th>Lastupdate</th>
@@ -61,6 +62,8 @@
               </tr>
           </tbody>
           </table>
+        </div>
+        <div id="bids-table" >
           <h1 class="text-center">bids:</h1>
           <table class="text-center mx-auto m-4">
           <thead>
@@ -84,6 +87,7 @@
               </tr>
           </tbody>
           </table>
+        </div>
       </div>
   </div>
 </template>
@@ -228,9 +232,25 @@ watch(selectedSymbol, () => {
 });
 </script>
 <style scoped>
-table,th,td{
-    border:1px solid;
-    color:black;
+table {
+  border-collapse: collapse; /* Avoid double borders */
+}
+
+th, td {
+  padding: 3px;
+  border: 1px solid #ddd;
+}
+
+#tables-container {
+  display: flex; /* Side-by-side on larger screens */
+  flex-wrap: wrap; /* Wrap tables if needed */
+  align-items: flex-start;
+  justify-content: space-evenly;
+}
+
+#bids-table {
+  margin-left:30px;
+  /* Other table styles */
 }
 
 </style>
