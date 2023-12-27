@@ -33,7 +33,7 @@
       </div>
       <div id="tables-container" style="margin-top:30px;">
         <div id="asks-table-container"> 
-          <h1 style="margin-bottom:0; color:red">Asks:</h1>
+          <h1 style="margin:0; color:red">Asks:</h1>
           <table id="asks-table">
           <thead>
               <tr>
@@ -62,7 +62,7 @@
           <table id="bids-table">
           <thead >
               <tr>
-                  <th style="border:1px solid green">Lastupdate</th>
+                  <th>Lastupdate</th>
                   <th>Price</th>
                   <th>{{ selectedSymbol.slice(0,-4) }}</th>
                   <th>usdt</th>
