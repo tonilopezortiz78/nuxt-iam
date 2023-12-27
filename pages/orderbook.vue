@@ -1,46 +1,40 @@
 <template>
   <div style="color:white; text-align:center">
-    <div class="text-center">
-      <h1>Cryptocurrency Symbol Select</h1>
-  
-      <div class="text-white text-3xl" v-if="isLoading">
-        <p>Loading symbols...</p>
-      </div>
-  
-      <select v-model="selectedSymbol">
+    <h1>LIVE ORDERBOOK BINANCE PERPETUAL FUTURES</h1> 
+    <div v-if="isLoading"> 
+      <p>Loading symbols...</p>
+    </div>
+    <div>
+      <label style="margin:10px; text-align: center;">Selected symbol: {{ selectedSymbol }}</label>
+      <select style="margin:10px;  text-align:center; font-size:1.5rem; " v-model="selectedSymbol">
         <option v-for="option in symbols"
           :key="option"
           :value="option" >
           {{ option }} 
         </option>
       </select>
-  
-      <p>Selected symbol: {{ selectedSymbol }}</p>
-  
-      <button @click="connectWebSocket">Connect WebSocket</button>
     </div>
+  
+      <button style="display:none" @click="connectWebSocket">Load symbol</button>
 
-    <div class=" pt-6 text-gray-800 text-3xl text-bold text-center text-white">
-          <h1>ORDERBOOK</h1> 
-      </div>
-      <div class=" text-gray-800 text-xl text-bold text-center text-white p-2">
-          <h1>BITCOIN USDT BINANCE PERPETUAL FUTURES</h1>
-          <h1> live orderbook, orders > {{filterQty}} btc</h1>
-          <h1> orders: {{ aggOrderbook.summary.total }}</h1>
-          <h1> total cancel/execute orders: {{ aggOrderbook.summary.deletes }}</h1>
+      <div style="margin:20px">
           <label >Filter by qty(coin) >: </label>
-          <input
+          <input style="width:150px; text-align:center; margin:0 20px; font-size:1.5rem"
           type="float"
           v-model="filterQty"
           />
       </div>
       <div>
+          <h3> orders: {{ aggOrderbook.summary.total }}</h3>
+          <h3> total cancel/execute orders: {{ aggOrderbook.summary.deletes }}</h3>
+      </div>
+      <div>
           <!-- <BtcChart class="center"/> -->
       </div>
       <div id="tables-container" style="margin-top:30px;">
-        <div id="asks-table"> 
-          <h1 class="text-center">asks:</h1>
-          <table  class="text-center mx-auto m-4">
+        <div id="asks-table-container"> 
+          <h1 style="margin-bottom:0; color:red">Asks:</h1>
+          <table id="asks-table">
           <thead>
               <tr>
                   <th>Lastupdate</th>
@@ -54,8 +48,8 @@
           <tbody v-for="(a,key) in aggOrderbook.a.data" :key="key">
               <tr v-if="parseFloat(a.qty)>filterQty">
                   <td>{{ new Date(a.lastUpdate*1).toLocaleString('es-ES') }}</td>
-                  <td>{{ parseFloat(key)}}</td>
-                  <td>{{ a.qty}}</td>
+                  <td>{{ numeral(key).format("0.000a") }}</td>
+                  <td>{{ numeral(a.qty).format("0.0a") }}</td>
                   <td>{{ numeral(a.usdt).format("0.0a") }}</td>
                   <td>{{ numeral(a.accqty).format("0.0a")}}</td>
                   <td>{{ numeral(a.accusdt).format("0.0a") }}</td>
@@ -63,12 +57,12 @@
           </tbody>
           </table>
         </div>
-        <div id="bids-table" >
-          <h1 class="text-center">bids:</h1>
-          <table class="text-center mx-auto m-4">
-          <thead>
+        <div id="bids-table-container" >
+          <h1 style="margin:0; color:green">Bids:</h1>
+          <table id="bids-table">
+          <thead >
               <tr>
-                  <th>Lastupdate</th>
+                  <th style="border:1px solid green">Lastupdate</th>
                   <th>Price</th>
                   <th>{{ selectedSymbol.slice(0,-4) }}</th>
                   <th>usdt</th>
@@ -79,8 +73,8 @@
           <tbody v-for="(a,key) in aggOrderbook.b.data" :key="key">
               <tr v-if="parseFloat(a.qty)>filterQty">
                   <td>{{ new Date(a.lastUpdate*1).toLocaleString('es-ES') }}</td>
-                  <td>{{ parseFloat(key)}}</td>
-                  <td>{{ a.qty}}</td>
+                  <td>{{ numeral(key).format("0.000a") }}</td>
+                  <td>{{ numeral(a.qty).format("0.0a") }}</td>
                   <td>{{ numeral(a.usdt).format("0.0a") }}</td>
                   <td>{{ numeral(a.accqty).format("0.0a")}}</td>
                   <td>{{ numeral(a.accusdt).format("0.0a") }}</td>
@@ -238,7 +232,6 @@ table {
 
 th, td {
   padding: 3px;
-  border: 1px solid #ddd;
 }
 
 #tables-container {
@@ -246,11 +239,36 @@ th, td {
   flex-wrap: wrap; /* Wrap tables if needed */
   align-items: flex-start;
   justify-content: space-evenly;
+  text-align: center;
 }
 
-#bids-table {
-  margin-left:30px;
+#asks-table-container,#bids-table-container{
+  margin:10px;
+}
+
+#bids-table{
+  margin:1px;
   /* Other table styles */
 }
+#asks-table{
+  margin:1px;
+}
 
+#asks-table th, #asks-table td{
+  border:1px solid red;
+ 
+}
+
+/*
+tr:nth-child(even){
+  background-color: blue;
+}
+tr:nth-child(odd){
+  background-color: gray;
+}
+*/
+
+#bids-table th, #bids-table td{
+  border:1px solid green;
+}
 </style>
