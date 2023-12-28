@@ -4,32 +4,60 @@
     <div v-if="isLoading"> 
       <p>Loading symbols...</p>
     </div>
-    <div>
-      <label style="margin:10px; text-align: center;">Selected symbol: {{ selectedSymbol }}</label>
-      <select style="margin:10px;  text-align:center; font-size:1.5rem; " v-model="selectedSymbol">
-        <option v-for="option in symbols"
-          :key="option"
-          :value="option" >
-          {{ option }} 
-        </option>
-      </select>
-    </div>
-  
+    <div id="selector-container">
+      <div>
+        <label style="margin:10px; text-align: center;">Selected symbol: {{ selectedSymbol }}</label>
+        <select style="margin:10px;  text-align:center; font-size:1.3rem; " v-model="selectedSymbol">
+          <option v-for="option in symbols"
+            :key="option"
+            :value="option" >
+            {{ option }} 
+          </option>
+        </select>
+      </div>
+    
       <button style="display:none" @click="connectWebSocket">Load symbol</button>
 
-      <div style="margin:20px">
-          <label >Filter by qty(coin) >: </label>
-          <input style="width:150px; text-align:center; margin:0 20px; font-size:1.5rem"
+      <div >
+          <label style="margin:10px">Filter by qty(coin) >: </label>
+          <input style="margin:10px; width:150px; text-align:center; font-size:1.3rem"
           type="float"
           v-model="filterQty"
           />
       </div>
-      <div>
-          <h3> orders: {{ aggOrderbook.summary.total }}</h3>
-          <h3> total cancel/execute orders: {{ aggOrderbook.summary.deletes }}</h3>
-      </div>
-      <div>
-          <!-- <BtcChart class="center"/> -->
+    </div>
+      <div id="overview-table-container"> 
+        <h1 style="margin:0; color:burlywood">Overview:</h1>
+        <table id="overview-table">
+        <thead>
+            <tr>
+                <th>Side</th>
+                <th>Update</th>
+                <th>Cancel or execute</th>
+                <th>deletes/updates %</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Asks:</td>
+                <td>{{ aggOrderbook.a.summary.updates}}</td>
+                <td>{{ aggOrderbook.a.summary.deletes}}</td>
+                <td>{{numeral(aggOrderbook.a.summary.deletes/aggOrderbook.a.summary.updates*100).format("0")}}</td>
+            </tr>
+            <tr>
+                <td>Bids:</td>
+                <td>{{ aggOrderbook.b.summary.updates}}</td>
+                <td>{{ aggOrderbook.b.summary.deletes}}</td>
+                <td>{{numeral(aggOrderbook.b.summary.deletes/aggOrderbook.b.summary.updates*100).format("0")}}</td>
+            </tr>
+            <tr style="font-weight: bold; font-size=1rem">
+                <td>Total:</td>
+                <td>{{ aggOrderbook.summary.updates}}</td>
+                <td>{{ aggOrderbook.summary.deletes }}</td>
+                <td>{{numeral(aggOrderbook.summary.deletes/aggOrderbook.summary.updates*100).format("0")}}</td>
+            </tr>
+        </tbody>
+        </table>
       </div>
       <div id="tables-container" style="margin-top:30px;">
         <div id="asks-table-container"> 
@@ -48,7 +76,7 @@
           <tbody v-for="(a,key) in aggOrderbook.a.data" :key="key">
               <tr v-if="parseFloat(a.qty)>filterQty">
                   <td>{{ new Date(a.lastUpdate*1).toLocaleString('es-ES') }}</td>
-                  <td>{{ numeral(key).format("0.000a") }}</td>
+                  <td>{{key}}</td>
                   <td>{{ numeral(a.qty).format("0.0a") }}</td>
                   <td>{{ numeral(a.usdt).format("0.0a") }}</td>
                   <td>{{ numeral(a.accqty).format("0.0a")}}</td>
@@ -73,7 +101,7 @@
           <tbody v-for="(a,key) in aggOrderbook.b.data" :key="key">
               <tr v-if="parseFloat(a.qty)>filterQty">
                   <td>{{ new Date(a.lastUpdate*1).toLocaleString('es-ES') }}</td>
-                  <td>{{ numeral(key).format("0.000a") }}</td>
+                  <td>{{ key}}</td>
                   <td>{{ numeral(a.qty).format("0.0a") }}</td>
                   <td>{{ numeral(a.usdt).format("0.0a") }}</td>
                   <td>{{ numeral(a.accqty).format("0.0a")}}</td>
@@ -109,7 +137,8 @@ let aggOrderbook=ref({
   a:{summary:{total:"",deletes:""},data:{}},
   b:{summary:{total:"",deletes:""},data:{}},
 });
-let deletes=0
+let deletes_a=0
+let deletes_b=0
 
 async function fetchSymbols() {
   const response = await fetch(binanceInfo);
@@ -130,10 +159,11 @@ async function connectWebSocket() {
     orderbookTick=ref({});
     aggOrderbook=ref({
     summary:{},
-      a:{summary:{total:"",deletes:""},data:{}},
-      b:{summary:{total:"",deletes:""},data:{}},
+      a:{summary:{updates:"",deletes:""},data:{}},
+      b:{summary:{updates:"",deletes:""},data:{}},
     });
-    deletes=0
+    deletes_a=0;
+    deletes_b=0;
   }
    webSocket=new WebSocket(`wss://fstream.binance.com/stream?streams=${selectedSymbol.value}@depth@100ms`);
 
@@ -163,11 +193,11 @@ async function connectWebSocket() {
         aggOrderbook.value["b"]["data"][price]= {lastUpdate: orderbookTick.value.data.E,qty: qty, usdt: price*qty};
     }
 
-    aggOrderbook.value["a"]["summary"]=Object.keys(aggOrderbook.value["a"]["data"]).length 
-    aggOrderbook.value["b"]["summary"]=Object.keys(aggOrderbook.value["b"]["data"]).length 
+    aggOrderbook.value.a.summary.updates=Object.keys(aggOrderbook.value["a"]["data"]).length 
+    aggOrderbook.value.b.summary.updates=Object.keys(aggOrderbook.value["b"]["data"]).length 
 
-    const total=aggOrderbook.value["a"]["summary"]+aggOrderbook.value["b"]["summary"]
-    aggOrderbook.value.summary.total=total
+    const total=aggOrderbook.value.a.summary.updates+aggOrderbook.value.b.summary.updates
+    aggOrderbook.value.summary.updates=total
 
     //console.log(aggOrderbook.value["a"])
     //console.log(aggOrderbook.value["b"])
@@ -177,8 +207,8 @@ async function connectWebSocket() {
     for (const [price,askData] of Object.entries(aggOrderbook.value["a"]["data"])){
         if(askData.qty===0){
             delete aggOrderbook.value.a.data[price]
-            deletes+=1
-            aggOrderbook.value.summary.deletes=deletes
+            deletes_a+=1
+            aggOrderbook.value.a.summary.deletes=deletes_a;
         }
         else{
             //acc qty
@@ -193,8 +223,8 @@ async function connectWebSocket() {
     for (const [price,askData] of Object.entries(aggOrderbook.value["b"]["data"])){
         if(askData.qty===0){
             delete aggOrderbook.value.b.data[price]
-            deletes+=1
-            aggOrderbook.value.summary.deletes=deletes
+            deletes_b+=1
+            aggOrderbook.value.b.summary.deletes=deletes_b
         }
         else{
             //acc qty
@@ -204,6 +234,7 @@ async function connectWebSocket() {
             aggOrderbook.value.b.data[price].accusdt=accUsdt
         }
     }
+    aggOrderbook.value.summary.deletes=aggOrderbook.value.a.summary.deletes+aggOrderbook.value.b.summary.deletes
 }
     };
   
@@ -241,9 +272,19 @@ th, td {
   justify-content: space-evenly;
   text-align: center;
 }
+#selector-container{
+  display: flex; /* Side-by-side on larger screens */
+  flex-wrap: wrap; /* Wrap tables if needed */
+  justify-content: space-evenly;
+  text-align: center;
+}
 
 #asks-table-container,#bids-table-container{
   margin:10px;
+}
+
+#overview-table-container{
+  margin:10px
 }
 
 #bids-table{
@@ -253,12 +294,21 @@ th, td {
 #asks-table{
   margin:1px;
 }
+#overview-table{
+  margin:0 auto;
+}
 
 #asks-table th, #asks-table td{
   border:1px solid red;
  
 }
 
+#bids-table th, #bids-table td {
+  border:1px solid green;
+}
+#overview-table th, #overview-table td {
+  border:1px solid burlywood;
+}
 /*
 tr:nth-child(even){
   background-color: blue;
@@ -268,7 +318,4 @@ tr:nth-child(odd){
 }
 */
 
-#bids-table th, #bids-table td{
-  border:1px solid green;
-}
 </style>
