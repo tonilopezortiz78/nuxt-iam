@@ -35,8 +35,8 @@
             <th>Qty</th>
             <th>usdt</th>
             <th>%</th>
-            <th>vol(coin)</th>
-            <th>vol(usdt)</th>
+            <th>volCoin</th>
+            <th>volUsdt</th>
             <th>trades</th>
           </tr>
         </thead>
@@ -44,8 +44,8 @@
           <tr>
             <td>{{ summary.data.c }}</td>
             <td>{{ summary.data.Q }}</td>
-            <td>{{ numeral(summary.data.Q * summary.data.c).format("0.0a")}}</td>
-            <td>{{ summary.data.P }}</td>
+            <td>{{ numeral(summary.data.Q * summary.data.c).format("0a")}}</td>
+            <td>{{ numeral(summary.data.P).format("0.0") }}</td>
             <td>{{ numeral(summary.data.v).format("0.0a") }}</td>
             <td>{{ numeral(summary.data.q).format("0.0a") }}</td>
             <td>{{ numeral(summary.data.n).format("0.0a") }}</td>
