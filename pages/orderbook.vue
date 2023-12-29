@@ -35,8 +35,8 @@
             <th>Qty</th>
             <th>usdt</th>
             <th>%</th>
-            <th>volume(coin)</th>
-            <th>volume(usdt)</th>
+            <th>vol(coin)</th>
+            <th>vol(usdt)</th>
             <th>trades</th>
           </tr>
         </thead>
