@@ -26,6 +26,35 @@
           />
       </div>
     </div>
+    <div id="coin-summary-container">
+      <h2 style="margin:0;">Summary {{ selectedSymbol }} (last 24h) :</h2>
+      <table id="coin-summary-table">
+        <thead>
+          <tr>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>usdt</th>
+            <th>%</th>
+            <th>volume(coin)</th>
+            <th>volume(usdt)</th>
+            <th>trades</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ summary.data.c }}</td>
+            <td>{{ summary.data.Q }}</td>
+            <td>{{ numeral(summary.data.Q * summary.data.c).format("0.0a")}}</td>
+            <td>{{ summary.data.P }}</td>
+            <td>{{ numeral(summary.data.v).format("0.0a") }}</td>
+            <td>{{ numeral(summary.data.q).format("0.0a") }}</td>
+            <td>{{ numeral(summary.data.n).format("0.0a") }}</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
       <div id="overview-table-container"> 
         <h1 style="margin:0; color:burlywood">Overview:</h1>
         <table id="overview-table">
@@ -69,8 +98,11 @@
                   <th>Price</th>
                   <th>{{ selectedSymbol.slice(0,-4) }}</th>
                   <th>usdt</th>
+                  <th>fromPrice%</th>
+                  <!--
                   <th>accBtc</th>
                   <th>accUsdt</th>
+                  -->
               </tr>
           </thead>
           <tbody v-for="(a,key) in aggOrderbook.a.data" :key="key">
@@ -79,8 +111,11 @@
                   <td>{{key}}</td>
                   <td>{{ numeral(a.qty).format("0.0a") }}</td>
                   <td>{{ numeral(a.usdt).format("0.0a") }}</td>
+                  <td>{{ numeral(((key-summary.data.c)/summary.data.c)*100).format("0.00") }}</td>
+                  <!--
                   <td>{{ numeral(a.accqty).format("0.0a")}}</td>
                   <td>{{ numeral(a.accusdt).format("0.0a") }}</td>
+                  -->
               </tr>
           </tbody>
           </table>
@@ -94,8 +129,11 @@
                   <th>Price</th>
                   <th>{{ selectedSymbol.slice(0,-4) }}</th>
                   <th>usdt</th>
+                  <th>fromPrice%</th>
+                  <!--
                   <th>accBtc</th>
                   <th>accUsdt</th>
+                  -->
               </tr>
           </thead>
           <tbody v-for="(a,key) in aggOrderbook.b.data" :key="key">
@@ -104,8 +142,11 @@
                   <td>{{ key}}</td>
                   <td>{{ numeral(a.qty).format("0.0a") }}</td>
                   <td>{{ numeral(a.usdt).format("0.0a") }}</td>
+                  <td>{{ numeral(((key-summary.data.c)/summary.data.c)*100).format("0.00") }}</td>
+                  <!--
                   <td>{{ numeral(a.accqty).format("0.0a")}}</td>
                   <td>{{ numeral(a.accusdt).format("0.0a") }}</td>
+                  -->
               </tr>
           </tbody>
           </table>
@@ -123,11 +164,14 @@ const quantity = ref('0');
 const isLoading = ref(true);
 const symbols = ref([]);
 let webSocket=null;
+let webSocket_ticker=null;
 const binanceInfo='https://fapi.binance.com/fapi/v1/exchangeInfo'
 const now=new Date();
 const startLocalTime=now.toLocaleDateString() + " " +now.toLocaleTimeString();
 
 //const { data: symbols}=await useFetch(binanceInfo);
+
+let summary=ref({data:{}});
 let orderbookTick=ref({});
 let filterQty=ref(200.0);
 connectWebSocket();
@@ -152,8 +196,12 @@ async function fetchSymbols() {
 
 async function connectWebSocket() {
   isLoading.value = true;
-  console.log("----", webSocket)
+  if(webSocket_ticker){
+    await webSocket_ticker.close(); // wait for the WebSocket to close completely
+    console.log("closing ticker websocket")
+  }
   if (webSocket) {
+    console.log("websocket open")
     await webSocket.close(); // wait for the WebSocket to close completely
     //console.log(webSocket)
     orderbookTick=ref({});
@@ -166,12 +214,23 @@ async function connectWebSocket() {
     deletes_b=0;
   }
    webSocket=new WebSocket(`wss://fstream.binance.com/stream?streams=${selectedSymbol.value}@depth@100ms`);
+   webSocket_ticker=new WebSocket(`wss://fstream.binance.com/stream?streams=${selectedSymbol.value}@ticker`);
 
   //webSocket = new WebSocket(`wss://stream.binance.com:9443/ws/${selectedSymbol.value}@trade`);
 
+  webSocket_ticker.onmessage=(event) =>{
+    summary.value=JSON.parse(event.data);
+  }
+  webSocket_ticker.onerror = (error) => {
+    console.error(error);
+  };
+
+  webSocket_ticker.onclose = () => {
+    console.log('onclose');
+  };
+
   webSocket.onmessage = (event) => {
     isLoading.value = false;
-
     orderbookTick.value=JSON.parse(event.data);
     // Convert epoch time to human-readable with milliseconds
     const epochTimeMs = orderbookTick.value.data.E;
@@ -248,7 +307,7 @@ async function connectWebSocket() {
 
   // Update the symbols when the page is mounted
   onMounted(async () => {
-symbols.value = await fetchSymbols();
+  symbols.value = await fetchSymbols();
 });
 
 // Update the selected symbol when the select element changes
@@ -286,6 +345,9 @@ th, td {
 #overview-table-container{
   margin:10px
 }
+#coin-summary-container{
+  margin:10px
+}
 
 #bids-table{
   margin:1px;
@@ -297,16 +359,22 @@ th, td {
 #overview-table{
   margin:0 auto;
 }
+#coin-summary-table{
+  margin:0 auto;
+}
+
 
 #asks-table th, #asks-table td{
   border:1px solid red;
- 
 }
 
 #bids-table th, #bids-table td {
   border:1px solid green;
 }
 #overview-table th, #overview-table td {
+  border:1px solid burlywood;
+}
+#coin-summary-table th, #coin-summary-table td {
   border:1px solid burlywood;
 }
 /*
