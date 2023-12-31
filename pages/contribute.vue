@@ -2,10 +2,7 @@
     <div>
         <div style="text-align:center">
 
-            <h1 style="color:burlywood">Gracias por tu valiosa contribución financiera. Todas las aportaciones serán tenidas en cuenta en nuestro próximo airdrop de tokens.</h1>
-            <br>
-            ---
-            <br>
+            <h2 style="color:burlywood">Gracias por tu valiosa contribución financiera. Todas las aportaciones serán tenidas en cuenta en nuestro próximo airdrop de tokens.</h2>
             <h3>Thanks for your generous financial contribution. We will take into consideration all contributions in the upcoming token airdrop.</h3>
         </div>
 
