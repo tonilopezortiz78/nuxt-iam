@@ -16,8 +16,8 @@
           @click="navigateTo('/orderbook')"
           >Orderbook</NxButton
         >
-        <NxButton theme="primary" size="large" @click="navigateTo('/markets')"
-          >Markets</NxButton
+        <NxButton theme="primary" size="large" @click="navigateTo('/Contribute')"
+          >Contribute</NxButton
         >
       </div>
     </div>

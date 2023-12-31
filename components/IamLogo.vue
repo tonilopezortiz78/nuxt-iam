@@ -2,7 +2,7 @@
   <img style="border-radius:100%" src="~~/iam/ui/img/tmlogo.jpg/" width="200px" />
 </template>
 
-<style>
+<style scoped>
 img {
   animation: spin 20s linear infinite; /* Creates a 5-second spinning animation */
 }

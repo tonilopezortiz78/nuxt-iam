@@ -1,6 +1,7 @@
 <template>
   <div style="color:white; text-align:center">
     <h1>LIVE ORDERBOOK BINANCE PERPETUAL FUTURES</h1> 
+    <h3>{{ today }}</h3>
     <div v-if="isLoading"> 
       <p>Loading symbols...</p>
     </div>
@@ -27,7 +28,7 @@
       </div>
     </div>
     <div id="coin-summary-container">
-      <h2 style="margin:0;">Summary {{ selectedSymbol }} (last 24h) :</h2>
+      <h2 style="margin:0;color:burlywood">Summary {{ selectedSymbol }} (last 24h) :</h2>
       <table id="coin-summary-table">
         <thead>
           <tr>
@@ -56,7 +57,7 @@
 
     </div>
       <div id="overview-table-container"> 
-        <h1 style="margin:0; color:burlywood">Overview:</h1>
+        <h1 style="margin:0; color:burlywood">Overview limit orders:</h1>
         <table id="overview-table">
         <thead>
             <tr>
@@ -176,10 +177,13 @@ let orderbookTick=ref({});
 let filterQty=ref(200.0);
 connectWebSocket();
 
+const nuxtApp = useNuxtApp();
+const today = nuxtApp.today;
+
 let aggOrderbook=ref({
   summary:{},
-  a:{summary:{total:"",deletes:""},data:{}},
-  b:{summary:{total:"",deletes:""},data:{}},
+  a:{summary:{updates:"",deletes:""},data:{}},
+  b:{summary:{updates:"",deletes:""},data:{}},
 });
 let deletes_a=0
 let deletes_b=0
@@ -232,6 +236,7 @@ async function connectWebSocket() {
   webSocket.onmessage = (event) => {
     isLoading.value = false;
     orderbookTick.value=JSON.parse(event.data);
+    console.log("raw",orderbookTick.value)
     // Convert epoch time to human-readable with milliseconds
     const epochTimeMs = orderbookTick.value.data.E;
     const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3 ,timeZoneName: 'short' };
@@ -257,7 +262,6 @@ async function connectWebSocket() {
 
     const total=aggOrderbook.value.a.summary.updates+aggOrderbook.value.b.summary.updates
     aggOrderbook.value.summary.updates=total
-
     //console.log(aggOrderbook.value["a"])
     //console.log(aggOrderbook.value["b"])
     // Initialize variables
@@ -294,8 +298,9 @@ async function connectWebSocket() {
         }
     }
     aggOrderbook.value.summary.deletes=aggOrderbook.value.a.summary.deletes+aggOrderbook.value.b.summary.deletes
-}
-    };
+    console.log("my format",aggOrderbook.value)
+  }
+};
   
     webSocket.onerror = (error) => {
       console.error(error);
