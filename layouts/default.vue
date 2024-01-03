@@ -70,11 +70,11 @@ const mainMenu = [
     name: "Nuxt IAM",
     children: nuxtIamMenu,
   },
+  */
   {
     name: "Markets",
     link: "/markets",
   },
-  */
   {
     name: "OrderBook",
     link: "/orderbook",

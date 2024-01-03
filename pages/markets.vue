@@ -1,5 +1,34 @@
 <template>
-  <div>
+  <MexcPromotion/>
+  <div style="text-align:center">
+    <table >
+      <thead>
+        <tr>
+          <th>rank</th>
+          <th>logo</th>
+          <th>symbol</th>
+          <th>name</th>
+          <th>price</th>
+          <th>%</th>
+          <th>volume</th>
+          <th>market cap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="symbol in tickerData" :key="tickerData.market_cap_rank">
+          <td>{{symbol.market_cap_rank}}</td>
+          <td><img :src='symbol.image'/></td>
+          <td>{{symbol.symbol}}</td>
+          <td>{{symbol.name}}</td>
+          <td>{{symbol.current_price}}</td>
+          <td>{{numeral(symbol.price_change_percentage_24h).format("0.0a")}}</td>
+          <td>{{numeral(symbol.total_volume).format("0a")}}</td>
+          <td>{{numeral(symbol.market_cap).format("0a")}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+    <!--
     <DataTable :value="tickerData" sortField="q" :sortOrder="-1"  filterDisplay="Row" stripedRows tableStyle="min-width: 50rem" scrollable scrollHeight="500px" :loading="loading"  :globalFilterFields="['symbol','id']">
         <template #header>
         <MexcPromotion/>
@@ -37,6 +66,7 @@
             </template>
         </Column>
   </DataTable>
+-->
 </div>
 </template>
 
@@ -109,6 +139,9 @@ ws.onerror = (error) => {
     "F": 0,             // First trade ID
     "L": 18150,         // Last trade Id
     "n": 18151          // Total number of trades
+
+
+[ { "id": "bitcoin", "symbol": "btc", "name": "Bitcoin", "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400", "current_price": 45217, "market_cap": 885892237676, "market_cap_rank": 1, "fully_diluted_valuation": 949736898699, "total_volume": 29288523090, "high_24h": 45863, "low_24h": 44717, "price_change_24h": -628.8359879632771, "price_change_percentage_24h": -1.37163, "market_cap_change_24h": -11280147773.40149, "market_cap_change_percentage_24h": -1.2573, "circulating_supply": 19588306, "total_supply": 21000000, "max_supply": 21000000, "ath": 69045, "ath_change_percentage": -34.48655, "ath_date": "2021-11-10T14:24:11.849Z", "atl": 67.81, "atl_change_percentage": 66607.38826, "atl_date": "2013-07-06T00:00:00.000Z", "roi": null, "last_updated": "2024-01-03T09:01:27.472Z", "price_change_percentage_1h_in_currency": 0.3803638703581821, "price_change_percentage_24h_in_currency": -1.3716292845078197, "price_change_percentage_7d_in_currency": 5.841737518849793 }, { "id": "ethereum"
 */ 
 useHead({
   title: "markets",
@@ -117,8 +150,30 @@ useHead({
 
 <style scoped>
 /* Add styles for your logo if needed */
+/* Add styles for your logo if needed */
 img {
-width: 300px; /* Adjust the width as needed */
-height: auto;
+  animation: spin 1s ease-out; /* Creates a 5-second spinning animation */
+  width: 35px; /* Adjust the width as needed */
+  height: auto;
 }
+img:hover{
+  transform:scale(1.2);
+}
+@keyframes spin {
+  0% { transform:  scale(1.3) }
+  100% { transform: scale(1) }
+}
+table {
+  border-collapse: collapse; /* Avoid double borders */
+  margin: 0 auto;
+  overflow-x:auto;
+  margin-top:10px;
+}
+
+th, td {
+  border:2px solid burlywood;
+  padding: 3px;
+}
+
 </style>
+

@@ -9,6 +9,11 @@
     <div id="selector-container">
       <div>
         <label style="margin:10px; text-align: center; ">Selected symbol: {{ selectedSymbol }}</label>
+        <input style="margin:10px; text-align:center; background-color: black; color:burlywood;font-size:1.3rem; border-radius: 2px;"
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search symbol..."
+          @input="filterSymbols">
         <select style="margin:10px;  text-align:center; background-color: black; color:burlywood;font-size:1.3rem; border-radius: 2px ;" v-model="selectedSymbol">
           <option v-for="option in symbols"
             :key="option"
