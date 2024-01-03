@@ -1,7 +1,7 @@
 <template>
 <div style="text-align: center;">
     <a style="margin:0; text-decoration:underline; text-decoration-color: blue;color:blue" href="https://bit.ly/TranscendMoneyMexc" target="_blank" rel="noopener noreferrer">
-      <img style="margin:0; background-color:white; border-radius: 6px; opacity:0.8; text-align:center" src="img/mexc.png" alt="trade on MEXC exchange, in 30 seconds no kyc, no spot fess" />
+      <img style="margin:0; background-color:white; border-radius: 6px; opacity:0.8; text-align:center" src="/img/mexc.png" alt="trade on MEXC exchange, in 30 seconds no kyc, no spot fess" />
       <p style="margin:0; "> Trade on mexc in 30 sec, no kyc. Up to 10,000 usdt rewards</p>
     </a>
 </div>
