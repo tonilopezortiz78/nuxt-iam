@@ -1,6 +1,7 @@
 <template>
   <MexcPromotion/>
   <div style="text-align:center">
+    <h1>FUTURES BINANCE LAST 24H</h1>
     <table >
       <thead>
         <tr>
