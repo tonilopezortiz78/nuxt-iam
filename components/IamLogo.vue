@@ -1,5 +1,5 @@
 <template>
-  <img style="border-radius:100%" src="~~/iam/ui/img/tmlogo.jpg/" width="200px" />
+  <img style="border-radius:100%" src="/img/tmlogo.jpg/" width="200px" />
 </template>
 
 <style scoped>
