@@ -1,4 +1,5 @@
 <template>
+  <MexcPromotion/>
   <div style="color:white; text-align:center">
     <h1>LIVE ORDERBOOK BINANCE PERPETUAL FUTURES</h1> 
     <h3>{{ today }}</h3>
@@ -7,8 +8,8 @@
     </div>
     <div id="selector-container">
       <div>
-        <label style="margin:10px; text-align: center;">Selected symbol: {{ selectedSymbol }}</label>
-        <select style="margin:10px;  text-align:center; font-size:1.3rem; " v-model="selectedSymbol">
+        <label style="margin:10px; text-align: center; ">Selected symbol: {{ selectedSymbol }}</label>
+        <select style="margin:10px;  text-align:center; background-color: black; color:burlywood;font-size:1.3rem; border-radius: 2px ;" v-model="selectedSymbol">
           <option v-for="option in symbols"
             :key="option"
             :value="option" >
@@ -21,7 +22,7 @@
 
       <div >
           <label style="margin:10px">Filter by qty(coin) >: </label>
-          <input style="margin:10px; width:150px; text-align:center; font-size:1.3rem"
+          <input style="margin:10px; width:150px; text-align:center; background-color: black; color:burlywood; border-radius: 2px; font-size:1.3rem;"
           type="float"
           v-model="filterQty"
           />
