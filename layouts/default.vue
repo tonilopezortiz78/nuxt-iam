@@ -6,8 +6,8 @@
       <slot />
     </div>
     <IamFooter>
-      <MexcPromotion/>
       <p>&copy; 2023 Transcend Money, community</p>
+      <MexcPromotion/>
     </IamFooter>
   </div>
 </template>
