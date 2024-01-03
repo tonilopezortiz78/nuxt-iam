@@ -21,7 +21,7 @@
         >
       </div>
         <a href="https://www.youtube.com/channel/UCo20pDW308WBWmM0txFl-5w">Check our youtube channel for further information</a>
-        <iframe width="450" height="315" src="https://www.youtube.com/embed/IzyG7F0OriU" title="Cómo Operar Futuros Criptomonedas Rápido y Fácil 🚀 en 10 minutos | Sin KYC, desde cualquier país 🌎" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <iframe width="400" height="315" src="https://www.youtube.com/embed/IzyG7F0OriU" title="Cómo Operar Futuros Criptomonedas Rápido y Fácil 🚀 en 10 minutos | Sin KYC, desde cualquier país 🌎" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   </div>
 </template>

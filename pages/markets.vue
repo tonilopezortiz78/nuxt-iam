@@ -13,6 +13,7 @@
           <th>%</th>
           <th>volume</th>
           <th>market cap</th>
+          <th>vol/cap</th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +26,7 @@
           <td>{{numeral(symbol.price_change_percentage_24h).format("0.0a")}}</td>
           <td>{{numeral(symbol.total_volume).format("0a")}}</td>
           <td>{{numeral(symbol.market_cap).format("0a")}}</td>
+          <td>{{numeral(symbol.total_volume/symbol.market_cap*100).format("0a")}}</td>
         </tr>
 
       </tbody>
