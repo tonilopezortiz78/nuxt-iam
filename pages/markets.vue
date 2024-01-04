@@ -10,9 +10,9 @@
           <th>symbol</th>
           <th>name</th>
           <th>price</th>
-          <th>%</th>
-          <th>volume</th>
-          <th>market cap</th>
+          <th @click="sortBy('price_change_percentage_24h')" class="sortable-header">%</th>
+          <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
+          <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
           <th>vol/cap(%)</th>
         </tr>
       </thead>
@@ -81,6 +81,8 @@ import numeral from 'numeral';
 //import Row from 'primevue/row';                   // optional
 
 let tickerData = ref({});
+tickerData.value.direction='asc'
+
 const marketsUrl='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&sparkline=false&price_change_percentage=1h%2C24h%2C7d&locale=en'
 
 async function fetchMarket() {
@@ -101,6 +103,19 @@ return coinData;
 
 }
 tickerData.value= await fetchMarket();
+
+function sortBy(property){
+  tickerData.value.property=property;
+  tickerData.value.direction=tickerData.value.direction==='asc'? 'desc':'asc';
+  tickerData.value.sort((a,b)=>{
+    if(tickerData.value.direction==='asc'){
+      return a[property]-b[property]
+    }else{
+      return b[property]-a[property]
+    }
+  });
+  console.log(tickerData.value.property, tickerData.value.direction,tickerData.value)
+};
 /*
 for (const coin of tickerData.value) {
   await new Promise(resolve => setTimeout(resolve, 3000)); // Introduce a 1-second delay
@@ -154,6 +169,13 @@ useHead({
 <style scoped>
 /* Add styles for your logo if needed */
 /* Add styles for your logo if needed */
+th.sortable-header {
+  cursor: pointer;
+}
+th.sortable-header:hover {
+  transform:scale(1.1)
+
+}
 img {
   animation: spin 1s ease-out; /* Creates a 5-second spinning animation */
   width: 35px; /* Adjust the width as needed */
@@ -161,6 +183,9 @@ img {
 }
 img:hover{
   transform:scale(1.2);
+  color:blanchedalmond;
+  font-weight: bold;
+  
 }
 @keyframes spin {
   0% { transform:  scale(1.3) }
