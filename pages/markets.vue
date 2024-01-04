@@ -1,7 +1,7 @@
 <template>
   <MexcPromotion/>
   <div style="text-align:center">
-    <h1>FUTURES BINANCE LAST 24H</h1>
+    <h1>FUTURES BINANCE LAST 24H.</h1>
     <table >
       <thead>
         <tr>
@@ -98,7 +98,6 @@ async function fetchMarket() {
 const fetchCoinDetails = async (coinId) => {
 const coinResponse = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
 const coinData = await coinResponse.json();
-console.log(coinData)
 return coinData;
 
 }
@@ -114,7 +113,6 @@ function sortBy(property){
       return b[property]-a[property]
     }
   });
-  console.log(tickerData.value.property, tickerData.value.direction,tickerData.value)
 };
 /*
 for (const coin of tickerData.value) {
