@@ -1,134 +1,130 @@
 <template>
   <MexcPromotion/>
-  <div style="text-align:center">
-    <h1>FUTURES BINANCE LAST 24H.</h1>
-    <table >
-      <thead>
-        <tr>
-          <th>rank</th>
-          <th>logo</th>
-          <th>symbol</th>
-          <th>name</th>
-          <th>price</th>
-          <th @click="sortBy('price_change_percentage_24h')" class="sortable-header">%</th>
-          <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
-          <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
-          <th>vol/cap(%)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="symbol in tickerData" :key="tickerData.market_cap_rank">
-          <td>{{symbol.market_cap_rank}}</td>
-          <td><img :src='symbol.image'/></td>
-          <td>{{symbol.symbol}}</td>
-          <td>{{symbol.name}}</td>
-          <td>{{symbol.current_price}}</td>
-          <td>{{numeral(symbol.price_change_percentage_24h).format("0.0a")+"%"}}</td>
-          <td>{{numeral(symbol.total_volume).format("0a")}}</td>
-          <td>{{numeral(symbol.market_cap).format("0a")}}</td>
-          <td>{{numeral(symbol.total_volume/symbol.market_cap*100).format("0a")+"%"}} </td>
-        </tr>
+  <div style="text-align:center ">
+    <h1>Last 24H markets</h1>
+    <h3>data at: {{ today }}</h3>
+  </div>
+    <div style="text-align:center">
+      <input style="color:burlywood; font-size: 20px; background-color: black;" type="text" v-model="searchQuery" placeholder="Search symbols or names">
+      <table >
+        <thead>
+          <tr>
+            <th @click="sortBy('market_cap_rank')" class="sortable-header">rank</th>
+            <th>logo</th>
+            <th @click="sortByName('symbol')" class="sortable-header">symbol</th>
+            <th @click="sortByName('name')" class="sortable-header">name</th>
+            <th>price</th>
+            <th @click="sortBy('price_change_percentage_24h')" class="sortable-header">%</th>
+            <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
+            <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
+            <th @click="sortBy('volMarketcap')" class="sortable-header">vol/cap(%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="symbol in filteredTickerData" :key="filteredTickerData.market_cap_rank">
+            <td>{{symbol.market_cap_rank}}</td>
+            <td><img :src='symbol.image'/></td>
+            <td>{{symbol.symbol}}</td>
+            <td>{{symbol.name}}</td>
+            <td>{{symbol.current_price}}</td>
+            <td>{{numeral(symbol.price_change_percentage_24h).format("0.0a")+"%"}}</td>
+            <td>{{numeral(symbol.total_volume).format("0a")}}</td>
+            <td>{{numeral(symbol.market_cap).format("0a")}}</td>
+            <td>{{numeral(symbol.volMarketcap).format("0a")+"%"}} </td>
+          </tr>
 
-      </tbody>
-    </table>
-    <!--
-    <DataTable :value="tickerData" sortField="q" :sortOrder="-1"  filterDisplay="Row" stripedRows tableStyle="min-width: 50rem" scrollable scrollHeight="500px" :loading="loading"  :globalFilterFields="['symbol','id']">
-        <template #header>
-        <MexcPromotion/>
-          <div class="flex flex-wrap align-items-center justify-content-between gap-1 mt-3">
-              <span class="text-xl text-900 font-bold underline text-white">SPOT MARKETS LAST 24H (usd)</span>
-          </div>
-        </template>
-        <Column field="market_cap_rank" header="rank" sortable ></Column>
-        <Column header="Image">
-          <template #body="slotProps">
-              <img :src="slotProps.data.image" :alt="slotProps.data.image" class="shadow-2 border-round" style="width: 33px" />
-          </template>
-        </Column>
-        <Column field="symbol" header="symbol" sortable ></Column>
-        <Column field="id" header="name" sortable ></Column>
-        <Column field="current_price" header="price" sortable>
-          <template #body="slotProps">
-            <span>{{ slotProps.data.current_price? numeral(slotProps.data.current_price).format("0.000a") : '' }}</span>
-          </template>
-        </Column>
+        </tbody>
+      </table>
+  </div>
+  </template>
 
-        <Column field="price_change_percentage_24h" header="%" sortable>
-          <template #body="slotProps">
-            <span>{{ numeral(slotProps.data.price_change_percentage_24h/100).format("0.00%") }}</span>
-          </template>
-        </Column>
-        <Column field="total_volume" header="volume(usd)" sortable>
-            <template #body="slotProps">
-              <span>{{ slotProps.data.total_volume ? numeral(slotProps.data.total_volume).format("0.0a") : '' }}</span>
-            </template>
-        </Column>
-        <Column field="market_cap" header="market_cap(usd)" sortable>
-            <template #body="slotProps">
-              <span>{{ slotProps.data.market_cap ? numeral(slotProps.data.market_cap).format("0.0a") : '' }}</span>
-            </template>
-        </Column>
-  </DataTable>
--->
-</div>
-</template>
+  <script setup>
+  import numeral from 'numeral';
+  //import DataTable from 'primevue/datatable';
+  //import Column from 'primevue/column';
+  //import ColumnGroup from 'primevue/columngroup';   // optional
+  //import Row from 'primevue/row';                   // optional
 
-<script setup>
-import numeral from 'numeral';
-//import DataTable from 'primevue/datatable';
-//import Column from 'primevue/column';
-//import ColumnGroup from 'primevue/columngroup';   // optional
-//import Row from 'primevue/row';                   // optional
+  let tickerData = ref({});
+  tickerData.value.direction='asc'
+  let searchQuery = ref('');
+  let filteredTickerData = ref({});
 
-let tickerData = ref({});
-tickerData.value.direction='asc'
+  const marketsurl='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&sparkline=false&price_change_percentage=1h%2c24h%2c7d&locale=en'
 
-const marketsUrl='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&sparkline=false&price_change_percentage=1h%2C24h%2C7d&locale=en'
+  async function fetchmarket() {
+    const response = await fetch(marketsurl);
+    const data = await response.json();
 
-async function fetchMarket() {
-  const response = await fetch(marketsUrl);
-  const data = await response.json();
+    // extract the symbols from the response data
+    //const symbols = data.symbols.map((symbol) => symbol.symbol.towercase());
+    getVolMarketcap(data)
+    return data;
+  }
 
-  // Extract the symbols from the response data
-  //const symbols = data.symbols.map((symbol) => symbol.symbol.toLowerCase());
+  const fetchcoindetails = async (coinid) => {
+  const coinresponse = await fetch(`https://api.coingecko.com/api/v3/coins/${coinid}`);
+  const coindata = await coinresponse.json();
+  return coindata;
 
-  return data;
-}
+  }
+  tickerData.value= await fetchmarket();
+  filteredTickerData.value=tickerData.value;
 
-const fetchCoinDetails = async (coinId) => {
-const coinResponse = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
-const coinData = await coinResponse.json();
-return coinData;
+  function Search(searchQuery){
+    filteredTickerData.value=tickerData.value.filter
+    (symbol => 
+    symbol.name.toLowerCase().includes(searchQuery.toLowerCase()) || symbol.symbol.toLowerCase().includes(searchQuery.toLowerCase()));
+  }
 
-}
-tickerData.value= await fetchMarket();
+  function sortBy(property){
+    filteredTickerData.value.property=property;
+    filteredTickerData.value.direction=filteredTickerData.value.direction==='asc'? 'desc':'asc';
+    filteredTickerData.value.sort((a,b)=>{
+      if(filteredTickerData.value.direction==='asc'){
+        return a[property]-b[property]
+      }else{
+        return b[property]-a[property]
+      }
+    });
+  };
+  function sortByName(property){
+    filteredTickerData.value.property=property;
+    filteredTickerData.value.direction=filteredTickerData.value.direction==='asc'? 'desc':'asc';
+    filteredTickerData.value.sort((a,b)=>{
+      if(filteredTickerData.value.direction==='asc'){
+        return a[property].localeCompare(b[property])
+      }else{
+        return b[property].localeCompare(a[property])
+      }
+    });
+  };
 
-function sortBy(property){
-  tickerData.value.property=property;
-  tickerData.value.direction=tickerData.value.direction==='asc'? 'desc':'asc';
-  tickerData.value.sort((a,b)=>{
-    if(tickerData.value.direction==='asc'){
-      return a[property]-b[property]
-    }else{
-      return b[property]-a[property]
+  function getVolMarketcap(symbols){
+    for(const symbol of symbols){
+      symbol.volMarketcap=symbol.total_volume/symbol.market_cap*100
     }
-  });
-};
-/*
-for (const coin of tickerData.value) {
-  await new Promise(resolve => setTimeout(resolve, 3000)); // Introduce a 1-second delay
-  let data=await fetchCoinDetails(coin.id);
-}
-*/
 
-/*
-// Establish WebSocket connection
-const ws = new WebSocket('wss://fstream.binance.com/ws/!ticker@arr');
 
-// Listen for incoming messages
-ws.onmessage = (event) => {
-  const data = JSON.parse(event.data);
-  tickerData.value = data;
+  }
+
+  const nuxtApp = useNuxtApp();
+  const today = nuxtApp.today;
+  /*
+  for (const coin of tickerData.value) {
+    await new Promise(resolve => setTimeout(resolve, 3000)); // Introduce a 1-second delay
+    let data=await fetchCoinDetails(coin.id);
+  }
+  */
+
+  /*
+  // Establish WebSocket connection
+  const ws = new WebSocket('wss://fstream.binance.com/ws/!ticker@arr');
+
+  // Listen for incoming messages
+  ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    tickerData.value = data;
 };
 
 // Handle WebSocket errors
@@ -162,6 +158,11 @@ ws.onerror = (error) => {
 useHead({
   title: "markets",
 });
+
+watch(searchQuery, () => {
+  Search(searchQuery.value);
+});
+
 </script>
 
 <style scoped>

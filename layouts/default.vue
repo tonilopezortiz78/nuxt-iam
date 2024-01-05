@@ -79,6 +79,10 @@ const mainMenu = [
     name: "OrderBook",
     link: "/orderbook",
   },
+  {
+    name: "Deals",
+    link: "/deals",
+  },
   /*
   {
     name: "Protected Page",

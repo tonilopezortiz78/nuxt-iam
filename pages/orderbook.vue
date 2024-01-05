@@ -237,7 +237,7 @@ async function connectWebSocket() {
   webSocket.onmessage = (event) => {
     isLoading.value = false;
     orderbookTick.value=JSON.parse(event.data);
-    console.log("raw",orderbookTick.value)
+    //console.log("raw",orderbookTick.value)
     // Convert epoch time to human-readable with milliseconds
     const epochTimeMs = orderbookTick.value.data.E;
     const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', fractionalSecondDigits: 3 ,timeZoneName: 'short' };
@@ -299,7 +299,7 @@ async function connectWebSocket() {
         }
     }
     aggOrderbook.value.summary.deletes=aggOrderbook.value.a.summary.deletes+aggOrderbook.value.b.summary.deletes
-    console.log("my format",aggOrderbook.value)
+    //console.log("my format",aggOrderbook.value)
   }
 };
   
