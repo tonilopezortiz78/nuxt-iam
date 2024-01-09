@@ -18,10 +18,13 @@
             <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
             <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
             <th @click="sortBy('volMarketcap')" class="sortable-header">vol/cap(%)</th>
+            <th @click="sortBy('circulating_supply')" class="sortable-header">circulating_supply</th>
+            <th @click="sortBy('total_supply')" class="sortable-header">total_supply</th>
+            <th @click="sortBy('max_supply')" class="sortable-header">max_supply</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="symbol in filteredTickerData" :key="filteredTickerData.market_cap_rank">
+          <tr v-for="symbol in filteredTickerData" :key="filteredTickerData.market_cap_rank" :style="{color: symbol.price_change_percentage_24h > 0 ? 'green' : 'red'}">
             <td>{{symbol.market_cap_rank}}</td>
             <td><img :src='symbol.image'/></td>
             <td>{{symbol.symbol}}</td>
@@ -31,6 +34,9 @@
             <td>{{numeral(symbol.total_volume).format("0a")}}</td>
             <td>{{numeral(symbol.market_cap).format("0a")}}</td>
             <td>{{numeral(symbol.volMarketcap).format("0a")+"%"}} </td>
+            <td>{{numeral(symbol.circulating_supply).format("0a")}}</td>
+            <td>{{numeral(symbol.total_supply).format("0a")}}</td>
+            <td>{{numeral(symbol.max_supply).format("0a")}}</td>
           </tr>
 
         </tbody>
@@ -49,9 +55,10 @@
   tickerData.value.direction='asc'
   let searchQuery = ref('');
   let filteredTickerData = ref({});
+  let color=ref('white')
 
   const marketsurl='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&sparkline=false&price_change_percentage=1h%2c24h%2c7d&locale=en'
-
+  
   async function fetchmarket() {
     const response = await fetch(marketsurl);
     const data = await response.json();
@@ -202,5 +209,8 @@ th, td {
   padding: 3px;
 }
 
+.gainColor{
+  color: v-bind(color);
+}
 </style>
 

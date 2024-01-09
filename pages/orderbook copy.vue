@@ -1,8 +1,8 @@
 <template>
   <MexcPromotion/>
   <div style="color:white; text-align:center">
-    <h1 class="gradient-text">LIVE ORDERBOOK BINANCE PERPETUAL FUTURES</h1> 
-    <h3> since: {{ today }}</h3>
+    <h1>LIVE ORDERBOOK BINANCE PERPETUAL FUTURES</h1> 
+    <h3>{{ today }}</h3>
     <div v-if="isLoading"> 
       <p>Loading symbols...</p>
     </div>
@@ -177,17 +177,15 @@ let summary=ref({data:{}});
 let orderbookTick=ref({});
 let filterQty=ref(200.0);
 connectWebSocket();
+
 const nuxtApp = useNuxtApp();
 const today = nuxtApp.today;
-
 
 let aggOrderbook=ref({
   summary:{},
   a:{summary:{updates:"",deletes:""},data:{}},
   b:{summary:{updates:"",deletes:""},data:{}},
 });
-let orderBook_filtered=ref({});
-orderBook_filtered.value=aggOrderbook.value;
 let deletes_a=0
 let deletes_b=0
 
@@ -393,13 +391,5 @@ tr:nth-child(odd){
   background-color: gray;
 }
 */
-.gradient-text {
-    background-color: #f3ec78;
-    background-image: linear-gradient(45deg, yellow, white);
-    background-size: 100%;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -webkit-text-fill-color: transparent; 
-    -moz-text-fill-color: transparent;
-}
+
 </style>
