@@ -16,12 +16,12 @@
             <th @click="sortBy('price_change_percentage_24h')" class="sortable-header">%</th>
             <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
             <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
-            <th @click="sortBy('volMarketcap')" class="sortable-header">vol/cap(%)</th>
+            <th @click="sortBy('volMarketcap')" class="sortable-header">vol/cap</th>
             <th @click="sortBy('ath')" class="sortable-header">ath</th>
             <th @click="sortBy('ath_change_percentage')" class="sortable-header">ath%</th>
-            <th @click="sortBy('circulating_supply')" class="sortable-header">circulating_supply</th>
-            <th @click="sortBy('total_supply')" class="sortable-header">total_supply</th>
-            <th @click="sortBy('max_supply')" class="sortable-header">max_supply</th>
+            <th @click="sortBy('circulating_supply')" class="sortable-header">circulating supply</th>
+            <th @click="sortBy('total_supply')" class="sortable-header">total supply</th>
+            <th @click="sortBy('max_supply')" class="sortable-header">max supply</th>
           </tr>
         </thead>
         <tbody>
