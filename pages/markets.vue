@@ -1,11 +1,10 @@
 <template>
   <MexcPromotion/>
   <div style="text-align:center ">
-    <h1>Last 24H markets</h1>
-    <h3>data at: {{ today }}</h3>
+    <h2>last 24h since: {{ today }}</h2>
   </div>
     <div style="text-align:center">
-      <input style="color:burlywood; font-size: 20px; background-color: black;" type="text" v-model="searchQuery" placeholder="Search symbols or names">
+      <input style="color:burlywood; font-size: 25px; background-color: black;" type="text" v-model="searchQuery" placeholder="Search symbols or names">
       <table >
         <thead>
           <tr>
@@ -18,6 +17,8 @@
             <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
             <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
             <th @click="sortBy('volMarketcap')" class="sortable-header">vol/cap(%)</th>
+            <th @click="sortBy('ath')" class="sortable-header">ath</th>
+            <th @click="sortBy('ath_change_percentage')" class="sortable-header">ath%</th>
             <th @click="sortBy('circulating_supply')" class="sortable-header">circulating_supply</th>
             <th @click="sortBy('total_supply')" class="sortable-header">total_supply</th>
             <th @click="sortBy('max_supply')" class="sortable-header">max_supply</th>
@@ -34,6 +35,8 @@
             <td>{{numeral(symbol.total_volume).format("0a")}}</td>
             <td>{{numeral(symbol.market_cap).format("0a")}}</td>
             <td>{{numeral(symbol.volMarketcap).format("0a")+"%"}} </td>
+            <td>{{numeral(symbol.ath).format("0.0a")}} </td>
+            <td>{{numeral(symbol.ath_change_percentage).format("0a")+"%"}} </td>
             <td>{{numeral(symbol.circulating_supply).format("0a")}}</td>
             <td>{{numeral(symbol.total_supply).format("0a")}}</td>
             <td>{{numeral(symbol.max_supply).format("0a")}}</td>
