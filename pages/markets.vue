@@ -81,11 +81,26 @@
   tickerData.value= await fetchmarket();
   filteredTickerData.value=tickerData.value;
 
+/*
   function Search(searchQuery){
     filteredTickerData.value=tickerData.value.filter
     (symbol => 
     symbol.name.toLowerCase().includes(searchQuery.toLowerCase()) || symbol.symbol.toLowerCase().includes(searchQuery.toLowerCase()));
   }
+*/
+
+  function Search(searchQuery) {
+  // Split the search query into an array of individual coin names/symbols
+  const searchTerms = searchQuery.toLowerCase().split(',');
+
+  filteredTickerData.value = tickerData.value.filter(symbol => {
+    // Check if any of the search terms match either name or symbol
+    return searchTerms.some(term =>
+      symbol.name.toLowerCase().includes(term) ||
+      symbol.symbol.toLowerCase().includes(term)
+    );
+  });
+}
 
   function sortBy(property){
     filteredTickerData.value.property=property;
