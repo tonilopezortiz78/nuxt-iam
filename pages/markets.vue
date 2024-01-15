@@ -11,7 +11,8 @@
             <th @click="sortBy('market_cap_rank')" class="sortable-header">rank</th>
             <th>logo</th>
             <th @click="sortByName('symbol')" class="sortable-header">symbol</th>
-            <th @click="sortByName('name')" class="sortable-header">name</th>
+            <th @click="sortByName('id')" class="sortable-header">name</th>
+            <th>category</th>
             <th>price</th>
             <th @click="sortBy('price_change_percentage_24h')" class="sortable-header">%</th>
             <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
@@ -27,9 +28,19 @@
         <tbody>
           <tr v-for="symbol in filteredTickerData" :key="filteredTickerData.market_cap_rank" :style="{color: symbol.price_change_percentage_24h > 0 ? 'green' : 'red'}">
             <td>{{symbol.market_cap_rank}}</td>
-            <td><img :src='symbol.image'/></td>
+            <td><img :src='symbol.image.small'/></td>
             <td>{{symbol.symbol}}</td>
-            <td>{{symbol.name}}</td>
+            <td v-if="symbol.links.homepage[0]">
+                <a :href="symbol.links.homepage[0]" target="_blank">{{ symbol.id }}</a>
+            </td>
+            <td v-else>
+                {{ symbol.id }}
+            </td>            
+            <td>
+             <select style="background-color:black;color:burlywood; text-align: center;">
+              <option v-for="category in symbol.categories">{{category}}</option>
+             </select> 
+            </td>
             <td>{{symbol.current_price}}</td>
             <td>{{numeral(symbol.price_change_percentage_24h).format("0.0a")+"%"}}</td>
             <td>{{numeral(symbol.total_volume).format("0a")}}</td>
@@ -49,6 +60,7 @@
 
   <script setup>
   import numeral from 'numeral';
+
   //import DataTable from 'primevue/datatable';
   //import Column from 'primevue/column';
   //import ColumnGroup from 'primevue/columngroup';   // optional
@@ -61,25 +73,29 @@
   let color=ref('white')
 
   const marketsurl='https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&sparkline=false&price_change_percentage=1h%2c24h%2c7d&locale=en'
-  
+
   async function fetchmarket() {
     const response = await fetch(marketsurl);
     const data = await response.json();
-
-    // extract the symbols from the response data
-    //const symbols = data.symbols.map((symbol) => symbol.symbol.towercase());
     getVolMarketcap(data)
-    return data;
+    return data
   }
 
   const fetchcoindetails = async (coinid) => {
   const coinresponse = await fetch(`https://api.coingecko.com/api/v3/coins/${coinid}`);
   const coindata = await coinresponse.json();
+  //here will map the data from coins to have access to website and categories.
+  //all the coins add website and categories.
   return coindata;
 
   }
-  tickerData.value= await fetchmarket();
+  tickerData.value=await fetchmarket();
+  console.log(tickerData.value)
   filteredTickerData.value=tickerData.value;
+
+  const jsonData=await loadDataFromFile("/data/data.json")
+  console.log("loaded",jsonData)
+
 
 /*
   function Search(searchQuery){
@@ -129,8 +145,50 @@
     for(const symbol of symbols){
       symbol.volMarketcap=symbol.total_volume/symbol.market_cap*100
     }
+    // extract the symbols from the response data
+    //const symbols = data.symbols.map((symbol) => symbol.symbol.towercase());
+  }
 
+  async function loadDataFromFile(path) {
+    //const { data } = await useFetch(path);
+    console.log(path)
+    const response=await useFetch(path)
+    console.log(response)
+    console.log(await response.data._rawValue)
+    console.log(tickerData.value)
+    filteredTickerData.value = mergeObjectsByName( await tickerData.value, await response.data._rawValue);
 
+  }
+
+  function mergeObjectsByName(arr1, arr2) {
+    const mergedObjects = [];
+
+    for (let obj1 of arr1) {
+      let foundMatch=false;
+      for (const obj2 of arr2) {
+        if (obj1.id=== obj2.id) {
+          foundMatch=true;
+          const mergedObj = { ...obj1, ...obj2 }; // Combine properties
+          mergedObjects.push(mergedObj);
+          break; // Move to the next object in arr1
+        }
+      }
+      if (!foundMatch) {
+        console.log(obj1)
+        // Assuming obj1 has a nested "links" object with a "homepage" array:
+        const obj3 = {
+          ...obj1,
+          links: {
+            homepage: [
+              "na", // Set the first element of the homepage array to "na"
+            ]
+          },
+          categories: ["na"]
+        };
+        mergedObjects.push(obj3); // Push only if no match was found
+      }
+    }
+    return mergedObjects;
   }
 
   const nuxtApp = useNuxtApp();
@@ -179,13 +237,28 @@ ws.onerror = (error) => {
 
 
 [ { "id": "bitcoin", "symbol": "btc", "name": "Bitcoin", "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400", "current_price": 45217, "market_cap": 885892237676, "market_cap_rank": 1, "fully_diluted_valuation": 949736898699, "total_volume": 29288523090, "high_24h": 45863, "low_24h": 44717, "price_change_24h": -628.8359879632771, "price_change_percentage_24h": -1.37163, "market_cap_change_24h": -11280147773.40149, "market_cap_change_percentage_24h": -1.2573, "circulating_supply": 19588306, "total_supply": 21000000, "max_supply": 21000000, "ath": 69045, "ath_change_percentage": -34.48655, "ath_date": "2021-11-10T14:24:11.849Z", "atl": 67.81, "atl_change_percentage": 66607.38826, "atl_date": "2013-07-06T00:00:00.000Z", "roi": null, "last_updated": "2024-01-03T09:01:27.472Z", "price_change_percentage_1h_in_currency": 0.3803638703581821, "price_change_percentage_24h_in_currency": -1.3716292845078197, "price_change_percentage_7d_in_currency": 5.841737518849793 }, { "id": "ethereum"
-*/ 
+
+this is detail of coin, cryptodata.
+[
+  {
+    "id": "bitcoin",
+    "symbol": "btc",
+    "name": "Bitcoin",
+    "web_slug": "bitcoin",
+    "asset_platform_id": null,
+    "platforms": {
+      "": ""
+    },
+    */
 useHead({
   title: "markets",
 });
 
 watch(searchQuery, () => {
   Search(searchQuery.value);
+});
+
+onMounted(() => {
 });
 
 </script>

@@ -72,7 +72,7 @@ const themeClass = computed(() => {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #fff;
+  background-color: #1f1d1d;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, .125);
   border-radius: 0.25rem;
