@@ -3,60 +3,61 @@
   <div style="text-align:center ">
     <h2>last 24h since: {{ today }}</h2>
   </div>
-    <div style="text-align:center">
-      <input style="color:burlywood; font-size: 25px; background-color: black;" type="text" v-model="searchQuery" placeholder="Search symbols or names">
-      <table >
-        <thead>
-          <tr>
-            <th @click="sortBy('market_cap_rank')" class="sortable-header">rank</th>
-            <th>logo</th>
-            <th @click="sortByName('symbol')" class="sortable-header">symbol</th>
-            <th @click="sortByName('id')" class="sortable-header">name</th>
-            <th>category</th>
-            <th>price</th>
-            <th @click="sortBy('price_change_percentage_24h')" class="sortable-header">%</th>
-            <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
-            <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
-            <th @click="sortBy('volMarketcap')" class="sortable-header">vol/cap</th>
-            <th @click="sortBy('ath')" class="sortable-header">ath</th>
-            <th @click="sortBy('ath_change_percentage')" class="sortable-header">ath%</th>
-            <th @click="sortBy('circulating_supply')" class="sortable-header">circulating supply</th>
-            <th @click="sortBy('total_supply')" class="sortable-header">total supply</th>
-            <th @click="sortBy('max_supply')" class="sortable-header">max supply</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="symbol in filteredTickerData" :key="filteredTickerData.market_cap_rank" :style="{color: symbol.price_change_percentage_24h > 0 ? 'green' : 'red'}">
-            <td>{{symbol.market_cap_rank}}</td>
-            <td><img :src='symbol.image.small'/></td>
-            <td>{{symbol.symbol}}</td>
-            <td v-if="symbol.links.homepage[0]">
-                <a :href="symbol.links.homepage[0]" target="_blank">{{ symbol.id }}</a>
-            </td>
-            <td v-else>
-                {{ symbol.id }}
-            </td>            
-            <td>
-             <select style="background-color:black;color:burlywood; text-align: center;">
-              <option v-for="category in symbol.categories">{{category}}</option>
-             </select> 
-            </td>
-            <td>{{symbol.current_price}}</td>
-            <td>{{numeral(symbol.price_change_percentage_24h).format("0.0a")+"%"}}</td>
-            <td>{{numeral(symbol.total_volume).format("0a")}}</td>
-            <td>{{numeral(symbol.market_cap).format("0a")}}</td>
-            <td>{{numeral(symbol.volMarketcap).format("0a")+"%"}} </td>
-            <td>{{numeral(symbol.ath).format("0.0a")}} </td>
-            <td>{{numeral(symbol.ath_change_percentage).format("0a")+"%"}} </td>
-            <td>{{numeral(symbol.circulating_supply).format("0a")}}</td>
-            <td>{{numeral(symbol.total_supply).format("0a")}}</td>
-            <td>{{numeral(symbol.max_supply).format("0a")}}</td>
-          </tr>
-
-        </tbody>
-      </table>
+  <div style="text-align:center">
+    <input style="color:burlywood; font-size: 25px; background-color: black;" type="text" v-model="searchQuery" placeholder="Search symbols or names">
   </div>
-  </template>
+  <div style="text-align:center">
+    <table >
+      <thead style="position: relative;">
+        <tr>
+          <th @click="sortBy('market_cap_rank')" class="sortable-header">rank</th>
+          <th>logo</th>
+          <th @click="sortByName('symbol')" class="sortable-header">symbol</th>
+          <th @click="sortByName('id')" class="sortable-header">name</th>
+          <th>category</th>
+          <th>price</th>
+          <th @click="sortBy('price_change_percentage_24h')" class="sortable-header">%</th>
+          <th @click="sortBy('total_volume')" class="sortable-header">volume</th>
+          <th @click="sortBy('market_cap')" class="sortable-header">market cap</th>
+          <th @click="sortBy('volMarketcap')" class="sortable-header">vol/cap</th>
+          <th @click="sortBy('ath')" class="sortable-header">ath</th>
+          <th @click="sortBy('ath_change_percentage')" class="sortable-header">ath%</th>
+          <th @click="sortBy('circulating_supply')" class="sortable-header">circulating supply</th>
+          <th @click="sortBy('total_supply')" class="sortable-header">total supply</th>
+          <th @click="sortBy('max_supply')" class="sortable-header">max supply</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="symbol in filteredTickerData" :key="filteredTickerData.market_cap_rank" :style="{color: symbol.price_change_percentage_24h > 0 ? 'green' : 'red'}">
+          <td>{{symbol.market_cap_rank}}</td>
+          <td><img :src='symbol.image.small'/></td>
+          <td>{{symbol.symbol}}</td>
+          <td v-if="symbol.links.homepage[0]">
+              <a :href="symbol.links.homepage[0]" target="_blank">{{ symbol.id }}</a>
+          </td>
+          <td v-else>
+              {{ symbol.id }}
+          </td>            
+          <td>
+          <select style="background-color:black;color:burlywood; text-align: center;font-size: 15px;">
+            <option v-for="category in symbol.categories">{{category}}</option>
+          </select> 
+          </td>
+          <td>{{symbol.current_price}}</td>
+          <td>{{numeral(symbol.price_change_percentage_24h).format("0.0a")+"%"}}</td>
+          <td>{{numeral(symbol.total_volume).format("0a")}}</td>
+          <td>{{numeral(symbol.market_cap).format("0a")}}</td>
+          <td>{{numeral(symbol.volMarketcap).format("0a")+"%"}} </td>
+          <td>{{numeral(symbol.ath).format("0.0a")}} </td>
+          <td>{{numeral(symbol.ath_change_percentage).format("0a")+"%"}} </td>
+          <td>{{numeral(symbol.circulating_supply).format("0a")}}</td>
+          <td>{{numeral(symbol.total_supply).format("0a")}}</td>
+          <td>{{numeral(symbol.max_supply).format("0a")}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
 
   <script setup>
   import numeral from 'numeral';
@@ -90,7 +91,6 @@
 
   }
   tickerData.value=await fetchmarket();
-  console.log(tickerData.value)
   filteredTickerData.value=tickerData.value;
 
   const jsonData=await loadDataFromFile("/data/data.json")
@@ -106,17 +106,22 @@
 */
 
   function Search(searchQuery) {
-  // Split the search query into an array of individual coin names/symbols
-  const searchTerms = searchQuery.toLowerCase().split(',');
-
-  filteredTickerData.value = tickerData.value.filter(symbol => {
-    // Check if any of the search terms match either name or symbol
-    return searchTerms.some(term =>
-      symbol.name.toLowerCase().includes(term) ||
-      symbol.symbol.toLowerCase().includes(term)
-    );
-  });
-}
+    // Split the search query into an array of individual coin names/symbols
+    const searchTerms = searchQuery.toLowerCase().split(',');
+    /* 
+    let objectsWithoutCategories = tickerData.value.map(symbol => ({
+        ...symbol,
+        categories: undefined // Delete the categories property
+      }));
+    */
+    filteredTickerData.value = tickerData.value.filter(symbol => {
+        // Check if any of the search terms match either name or symbol
+      return searchTerms.some(term =>
+        symbol.name.toLowerCase().includes(term) ||
+        symbol.symbol.toLowerCase().includes(term)
+      );
+    });
+  }
 
   function sortBy(property){
     filteredTickerData.value.property=property;
@@ -157,6 +162,7 @@
     console.log(await response.data._rawValue)
     console.log(tickerData.value)
     filteredTickerData.value = mergeObjectsByName( await tickerData.value, await response.data._rawValue);
+    tickerData.value=filteredTickerData.value
 
   }
 
@@ -258,8 +264,6 @@ watch(searchQuery, () => {
   Search(searchQuery.value);
 });
 
-onMounted(() => {
-});
 
 </script>
 
@@ -271,7 +275,9 @@ th.sortable-header {
 }
 th.sortable-header:hover {
   transform:scale(1.1)
-
+}
+tr:hover{
+  background-color:   rgba(242, 242, 242, 0.1); /* Light grey with 80% opacity */
 }
 img {
   animation: spin 1s ease-out; /* Creates a 5-second spinning animation */
